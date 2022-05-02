@@ -18,7 +18,7 @@ var allUserCmds = [ ]; // array of strings to hold the commands user types
 var currentCmd = ""; // string to hold current cmd user is typing
 
 //var PROMPT = "c:\\>";
-var PROMPT = "user@domain:/home/user$";
+var PROMPT = "user@domain:/home/rsantomauro$";
 var promptWidth = null;
 var promptPad = 3;
 var leftWindowMargin = 2;
@@ -29,12 +29,11 @@ var flashCounter = 1;
 // line of code
 var currentLineOfCode = "";
 var linkText="https://github.com/rsantomauro/";
-var linkX=5;
-var linkY=15;
 var linkHeight=10;
 var linkWidth;
 var inLink = false;
-
+var linkGitX= 1;
+var linkY= 1;
 
 function initApp()
 {
@@ -103,11 +102,11 @@ function on_mousemove (ev) {
 	  x = ev.layerX;
 	  y = ev.layerY;
 	}
-	x-=canvas.offsetLeft;
-	y-=canvas.offsetTop;
+	x-=theCanvas.offsetLeft;
+	y-=theCanvas.offsetTop;
 	
 	//is the mouse over the link?
-	if(x>=linkX && x <= (linkX + linkWidth) && y<=linkY && y>= (linkY-linkHeight)){
+	if(x>=linkGitX && x <= (linkGitX + linkWidth) && y<=linkY && y>= (linkY-linkHeight)){
 		document.body.style.cursor = "pointer";
 		inLink=true;
 	}
@@ -164,10 +163,12 @@ function keyDownHandler(e){
 			newLineOfText();
 			ctx.fillText  ("total 28",3, cursor.y);
 			newLineOfText();
-			ctx.fillText  ("lrwxr-xr-x 1 user sysadmin 4096 Jun 11 2021 .git -> "+linkText,4, cursor.y);
+			ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 .git -> "+linkText,4, cursor.y);
+			linkY= cursor.y;
 			linkWidth=ctx.measureText(linkText).width;
+			linkGitX= (linkWidth*2)-20;
 			newLineOfText();
-			ctx.fillText  ("lrwxr-xr-x 1 user sysadmin 4096 Jun 11 2021 linkein -> https://www.linkedin.com/in/rodrigo-santomauro-lema-b02a83a3/",5, cursor.y);
+			ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 linkein -> https://www.linkedin.com/in/rodrigo-santomauro-lema-b02a83a3/",5, cursor.y);
 			newLineOfText();
 			blotOutCursor();
 			allUserCmds.push(currentCmd);
@@ -191,8 +192,8 @@ function keyDownHandler(e){
 		}
 		currentLineOfCode = "";
 	}
-	canvas.addEventListener("mousemove", on_mousemove, false);
-	canvas.addEventListener("click", on_click, false);
+	theCanvas.addEventListener("mousemove", on_mousemove, false);
+	theCanvas.addEventListener("click", on_click, false);
 }
 
 function showKey(e){
