@@ -26,6 +26,9 @@ var cursor = null;
 window.addEventListener("load", initApp);
 var flashCounter = 1;
 
+// line of code
+var currentLineOfCode = "";
+
 function initApp()
 {
 	theCanvas = document.getElementById("gamescreen");
@@ -106,9 +109,21 @@ function keyDownHandler(e){
 				}
 			}
 	}
+	currentLineOfCode=currentLineOfCode+currentKey;
+	console.log(currentLineOfCode);
 	// handle <ENTER> key
 	if (currentKey == 13 || currentKey == 'Enter')
 	{
+		// Chequeo ls
+		if (currentLineOfCode == 'KeyLKeySEnter'){
+			ctx.font = outputFont;
+			ctx.fillStyle = fontColor;
+
+			ctx.fillText  ("Hola",cursor.x, cursor.y);
+			cursor.x += charWidth;
+			currentCmd += String.fromCharCode(currentLineOfCode.charCode);
+			currentLineOfCode = "";
+		}
 		blotOutCursor();
 		drawNewLine();
 		cursor.x=promptWidth-charWidth;
