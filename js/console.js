@@ -28,6 +28,13 @@ var flashCounter = 1;
 
 // line of code
 var currentLineOfCode = "";
+var linkText="https://github.com/rsantomauro/";
+var linkX=5;
+var linkY=15;
+var linkHeight=10;
+var linkWidth;
+var inLink = false;
+
 
 function initApp()
 {
@@ -82,6 +89,41 @@ function blotOutCursor(){
 	ctx.fillRect(cursor.x,cursor.y,cursor.width,cursor.height);
 }
 
+// this allows you to insert text
+function newLineOfText(){
+	cursor.x=promptWidth-charWidth;
+	cursor.y+=lineHeight;
+}
+
+function on_mousemove (ev) {
+	var x, y;
+  
+	// Get the mouse position relative to the canvas element.
+	if (ev.layerX || ev.layerX == 0) { //for firefox
+	  x = ev.layerX;
+	  y = ev.layerY;
+	}
+	x-=canvas.offsetLeft;
+	y-=canvas.offsetTop;
+	
+	//is the mouse over the link?
+	if(x>=linkX && x <= (linkX + linkWidth) && y<=linkY && y>= (linkY-linkHeight)){
+		document.body.style.cursor = "pointer";
+		inLink=true;
+	}
+	else{
+		document.body.style.cursor = "";
+		inLink=false;
+	}
+  }
+  
+  //if the link has been clicked, go to link
+  function on_click(e) {
+	if (inLink)  {
+	  window.location = linkText;
+	}
+  }
+
 function keyDownHandler(e){
 	
 	var currentKey = null;
@@ -115,15 +157,29 @@ function keyDownHandler(e){
 	if (currentKey == 13 || currentKey == 'Enter')
 	{
 		// Chequeo ls
-		if (currentLineOfCode == 'KeyLKeySEnter'){
+		if (currentLineOfCode == 'KeyLKeySEnter' || currentLineOfCode == 'KeyLKeyLEnter'){
 			ctx.font = outputFont;
 			ctx.fillStyle = fontColor;
-
-			ctx.fillText  ("Hola",cursor.x, cursor.y);
-			cursor.x += charWidth;
-			currentCmd += String.fromCharCode(currentLineOfCode.charCode);
+			
+			newLineOfText();
+			ctx.fillText  ("total 28",3, cursor.y);
+			newLineOfText();
+			ctx.fillText  ("lrwxr-xr-x 1 user sysadmin 4096 Jun 11 2021 .git -> "+linkText,4, cursor.y);
+			linkWidth=ctx.measureText(linkText).width;
+			newLineOfText();
+			ctx.fillText  ("lrwxr-xr-x 1 user sysadmin 4096 Jun 11 2021 linkein -> https://www.linkedin.com/in/rodrigo-santomauro-lema-b02a83a3/",5, cursor.y);
+			newLineOfText();
+			blotOutCursor();
+			allUserCmds.push(currentCmd);
 			currentLineOfCode = "";
 		}
+
+		// chequeo clear
+		if (currentLineOfCode == 'KeyCKeyLKeyEKeyAKeyREnter'){
+//			Funcion
+//			initApp()
+		}
+
 		blotOutCursor();
 		drawNewLine();
 		cursor.x=promptWidth-charWidth;
@@ -133,7 +189,10 @@ function keyDownHandler(e){
 			allUserCmds.push(currentCmd);
 			currentCmd = "";
 		}
+		currentLineOfCode = "";
 	}
+	canvas.addEventListener("mousemove", on_mousemove, false);
+	canvas.addEventListener("click", on_click, false);
 }
 
 function showKey(e){
