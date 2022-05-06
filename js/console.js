@@ -1,6 +1,6 @@
 // original work https://www.codeproject.com/Articles/1066735/Command-Console-in-your-browser-via-HTML-Canvas-J
 //console.js
-
+import("https://api.ipify.org?format=jsonp&callback=getIP");
 var ctx = null;
 var theCanvas = null;
 var lineHeight = 20;
@@ -25,6 +25,8 @@ var leftWindowMargin = 2;
 var cursor = null;
 window.addEventListener("load", initApp);
 var flashCounter = 1;
+
+// IP
 
 // line of code for git
 var currentLineOfCode = "";
@@ -202,8 +204,19 @@ function keyDownHandler(e){
 		// chequeo clear
 		if (currentLineOfCode == 'KeyCKeyLKeyEKeyAKeyREnter' || currentLineOfCode == 'KeyCKeyLKeySEnter'){
 		//	Recarga la webapp
-			location.reload()
+			location.reload();
 		}
+
+		// chequeo whoami
+		if (currentLineOfCode == 'KeyWKeyHKeyOKeyAKeyMKeyIEnter'){
+			whoami();
+		}
+
+		// chequeo ipconfig
+		if (currentLineOfCode == 'KeyIKeyPEnter' || currentLineOfCode == 'KeyIKeyPKeyCKeyOKeyNKeyFKeyIKeyGEnter' || currentLineOfCode == 'KeyIKeyPSpaceKeyAKeyDKeyDKeyREnter'){
+			ip();
+		}
+
 
 		blotOutCursor();
 		drawNewLine();
@@ -353,4 +366,31 @@ function ls() {
 	blotOutCursor();
 	allUserCmds.push(currentCmd);
 	currentLineOfCode = "";
+}
+
+function whoami() {
+	newLineOfText();
+	ctx.fillText  ("rsantomauro -> Rodrigo Santomauro, 25 years, Montevideo, Uruguay",3, cursor.y);	
+	blotOutCursor();
+	allUserCmds.push(currentCmd);
+	currentLineOfCode = "";
+}
+
+function ip() {
+	newLineOfText();
+	ctx.fillText  ("Your IP: "+clientIP,3, cursor.y);
+	blotOutCursor();
+	allUserCmds.push(currentCmd);
+	currentLineOfCode = "";
+}
+
+
+// Configuro IP
+function getIP(json) {
+    clientIP = json.ip;
+    saveClientIp();
+}
+
+function saveClientIp () {
+    return clientIP;
 }
