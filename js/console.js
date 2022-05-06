@@ -200,7 +200,7 @@ function keyDownHandler(e){
 		}
 
 		// chequeo clear
-		if (currentLineOfCode == 'KeyCKeyLKeyEKeyAKeyREnter'){
+		if (currentLineOfCode == 'KeyCKeyLKeyEKeyAKeyREnter' || currentLineOfCode == 'KeyCKeyLKeySEnter'){
 		//	Recarga la webapp
 			location.reload()
 		}
