@@ -201,8 +201,8 @@ function keyDownHandler(e){
 
 		// chequeo clear
 		if (currentLineOfCode == 'KeyCKeyLKeyEKeyAKeyREnter'){
-//			Funcion
-//			initApp()
+		//	Recarga la webapp
+			location.reload()
 		}
 
 		blotOutCursor();
