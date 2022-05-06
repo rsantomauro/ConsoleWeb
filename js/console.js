@@ -217,6 +217,10 @@ function keyDownHandler(e){
 			ip();
 		}
 
+		// chequeo help
+		if (currentLineOfCode == 'KeyHKeyEKeyLKeyPEnter'){
+			help();
+		}
 
 		blotOutCursor();
 		drawNewLine();
@@ -384,6 +388,21 @@ function ip() {
 	currentLineOfCode = "";
 }
 
+function help() {
+	newLineOfText();
+	ctx.fillText  ("Try to use this commands:",3, cursor.y);
+	newLineOfText();
+	ctx.fillText  ("\t\t\t- ls / ll",4, cursor.y);
+	newLineOfText();
+	ctx.fillText  ("\t\t\t- whoami",5, cursor.y);
+	newLineOfText();
+	ctx.fillText  ("\t\t\t- ip / ipconfig / ip addr",6, cursor.y);
+	newLineOfText();
+	ctx.fillText  ("\t\t\t- clear",7, cursor.y);
+	blotOutCursor();
+	allUserCmds.push(currentCmd);
+	currentLineOfCode = "";
+}
 
 // Configuro IP
 function getIP(json) {
