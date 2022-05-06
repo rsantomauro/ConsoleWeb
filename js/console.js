@@ -26,14 +26,31 @@ var cursor = null;
 window.addEventListener("load", initApp);
 var flashCounter = 1;
 
-// line of code
+// line of code for git
 var currentLineOfCode = "";
-var linkText="https://github.com/rsantomauro/";
-var linkHeight=10;
-var linkWidth;
-var inLink = false;
+var linkGitText="https://github.com/rsantomauro/";
+var linkGitHeight=10;
+var linkGitWidth;
+var inLinkGit = false;
 var linkGitX= 1;
-var linkY= 1;
+var linkGitY= 1;
+
+// line of code for linkendin
+var linkLinText="https://www.linkedin.com/in/rsantomauro";
+var linkLinHeight=10;
+var linkLinWidth;
+var inLinkLin = false;
+var linkLinX= 1;
+var linkLinY= 1;
+
+// line of code for instagram
+var linkInsText="https://www.instagram.com/dinopics.jpg";
+var linkInsHeight=10;
+var linkInsWidth;
+var inLinkIns = false;
+var linkInsX= 1;
+var linkInsY= 1;
+
 
 function initApp()
 {
@@ -105,21 +122,41 @@ function on_mousemove (ev) {
 	x-=theCanvas.offsetLeft;
 	y-=theCanvas.offsetTop;
 	
-	//is the mouse over the link?
-	if(x>=linkGitX && x <= (linkGitX + linkWidth) && y<=linkY && y>= (linkY-linkHeight)){
+	if(x>=linkGitX && x <= (linkGitX + linkGitWidth) && y<=linkGitY && y>= (linkGitY-linkGitHeight)){
 		document.body.style.cursor = "pointer";
-		inLink=true;
+		inLinkGit=true;
 	}
-	else{
-		document.body.style.cursor = "";
-		inLink=false;
-	}
+	else if(x>=linkLinX && x <= (linkLinX + linkLinWidth) && y<=linkLinY && y>= (linkLinY-linkLinHeight)){
+		document.body.style.cursor = "pointer";
+		inLinkLin=true;
+		inLinkGit=false;
+		}
+		else if(x>=linkInsX && x <= (linkInsX + linkInsWidth) && y<=linkInsY && y>= (linkInsY-linkInsHeight)){
+			document.body.style.cursor = "pointer";
+			inLinkIns=true;
+			inLinkLin=false;
+			inLinkGit=false;
+		}
+		else{
+			document.body.style.cursor = "";
+			inLinkIns=false;
+			inLinkLin=false;
+			inLinkGit=false;
+		}
   }
-  
-  //if the link has been clicked, go to link
+
   function on_click(e) {
-	if (inLink)  {
-	  window.location = linkText;
+	if (inLinkLin)  {
+		window.open(linkLinText,'_blank');
+		console.log("llegue");
+	}
+	if (inLinkIns)  {
+		window.open(linkInsText,'_blank');
+		console.log("llegue2");
+	}
+	if (inLinkGit)  {
+		window.open(linkGitText,'_blank');
+		console.log("llegue3");
 	}
   }
 
@@ -156,23 +193,10 @@ function keyDownHandler(e){
 	if (currentKey == 13 || currentKey == 'Enter')
 	{
 		// Chequeo ls
-		if (currentLineOfCode == 'KeyLKeySEnter' || currentLineOfCode == 'KeyLKeyLEnter'){
+		if (currentLineOfCode == 'KeyLKeySEnter' || currentLineOfCode == 'KeyLKeyLEnter' || currentLineOfCode == 'KeyLKeySpaceSlashKeyLEnter'){
 			ctx.font = outputFont;
 			ctx.fillStyle = fontColor;
-			
-			newLineOfText();
-			ctx.fillText  ("total 28",3, cursor.y);
-			newLineOfText();
-			ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 .git -> "+linkText,4, cursor.y);
-			linkY= cursor.y;
-			linkWidth=ctx.measureText(linkText).width;
-			linkGitX= (linkWidth*2)-20;
-			newLineOfText();
-			ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 linkein -> https://www.linkedin.com/in/rodrigo-santomauro-lema-b02a83a3/",5, cursor.y);
-			newLineOfText();
-			blotOutCursor();
-			allUserCmds.push(currentCmd);
-			currentLineOfCode = "";
+			ls();
 		}
 
 		// chequeo clear
@@ -301,4 +325,32 @@ function draw()
 	{
 		drawPrompt(Math.ceil(cursor.y/lineHeight));
 	}
+}
+
+
+// Aqui quedan las funciones de despligue de mensajes
+
+// ls
+function ls() {
+	newLineOfText();
+	ctx.fillText  ("total 25",3, cursor.y);
+	newLineOfText();
+	ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 .git -> "+linkGitText,4, cursor.y);
+	linkGitY= cursor.y;
+	linkGitWidth=ctx.measureText(linkGitText).width;
+	linkGitX= (linkGitWidth*2)-20;
+	newLineOfText();
+	ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 linkedin -> "+linkLinText,5, cursor.y);
+	linkLinY= cursor.y;
+	linkLinWidth=ctx.measureText(linkLinText).width;
+	linkLinX= (linkLinWidth*2)-118;
+	newLineOfText();
+	ctx.fillText  ("lrwxr-xr-x 1 rsantomauro sysadmin 4096 Jun 11 2021 instagram -> "+linkInsText,6, cursor.y);
+	linkInsY= cursor.y;
+	linkInsWidth=ctx.measureText(linkInsText).width;
+	linkInsX= (linkInsWidth*2)-90;
+	newLineOfText();
+	blotOutCursor();
+	allUserCmds.push(currentCmd);
+	currentLineOfCode = "";
 }
